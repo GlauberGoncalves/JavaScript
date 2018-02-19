@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <title>Document</title>
+    <style>
+    
+        body{
+            padding: 30px;
+        }
+    
+    </style>
+</head>
+<body class="container">
+
+<h3>Crud Javascript</h3>
+
+<div class="row">
+    <label class="col s12">    
+        <input type="text" id="dados" class="col s4">        
+        <button class="waves-effect waves-light btn" onclick="app.Insert()">incluir</button>
+    </label> 
+
+    <div class="atualizar col s12" id='edit' style="display:none;">
+        <input type="text" class="col s4" id='data_for_update'>
+        <button class="btn" onclick="app.Update()">Atualizar</button>
+    </div>
+
+</div>
+
+<table>
+    <thead>
+      <tr>
+          <th>Times</th>
+          <th>Editar</th>
+          <th>Excluir</th>
+      </tr>
+    </thead>
+
+    <tbody id="display">
+
+    </tbody>
+  </table>
+
+<script>
+
+var app = new function(){
+
+    this.times = ['Flamengo', 'Vasco', 'Fluminense'];    
+    this.quantidadeMinimaCaracteres = 4;
+
+    this.Insert = function(data){
+        let display = document.getElementById('display');
+        let dados;
+        if( !data ){
+            console.log('dados não existem')
+            dados = document.getElementById('dados');
+            if( dados.value.length >= this.quantidadeMinimaCaracteres ){
+                this.times.push(dados.value);
+                dados.value = ''
+                this.Read();
+            }            
+        } else {
+                    console.log('dados existem')
+                    dados = data;
+                    if( dados.length >= this.quantidadeMinimaCaracteres ){
+                        this.times.push(dados);
+                        dados = ''
+                        this.Read();            
+                }
+                console.log(dados);
+            }
+    }
+
+    this.Delite = function(id){
+        temp = []
+        console.log(id)
+        for(let i = 0 ; i < this.times.length; i++){
+            if( i != id ){
+                temp.push(this.times[i])
+            } else {
+                console.log('não incluido id: ',id)
+            }
+        }
+        this.times = temp;        
+        this.Read();
+        
+    }
+
+    this.Edit = function(id){
+        div = document.getElementById('edit');
+        frm = document.getElementById('data_for_update')
+        
+        frm.value = this.times[id];
+        document.getElementById('edit').value = id;
+        div.style.display = 'block';                     
+    }    
+
+    this.Update= function(id){
+        let data = document.getElementById('data_for_update').value;
+        
+        this.Insert(data);
+        this.Delite(document.getElementById('edit').value);
+        document.getElementById('edit').style.display = 'none';
+        this.Read();
+    }
+
+    this.Read = function() {
+        var display = document.getElementById('display');
+        display.innerHTML = '';
+
+        for(let i=0; i < this.times.length; i++){
+            display.innerHTML += "<tr><td>"+ this.times[i] + "</td>" + this.buttons(i) + "</tr>"
+        }        
+    }
+
+    this.buttons = function(id){
+        let btnDelite = '';
+        let btnEdit = '';
+        
+        btnDelite = "<td><button class='btn' id='" + id + "' onclick='app.Delite(" + id + ")'>Excluir</button></td>";
+        btnEdit   = "<td><button class='btn' id='" + id + "' onclick='app.Edit(" + id + ")'>Editar</button></td>";
+
+        return btnDelite + btnEdit;
+    }
+
+    this.Start = function(){
+        this.Read()
+    }
+
+}
+
+    /*
+    * Iniciando APP 
+    */
+    app.Start();
+
+</script>
+</body>
+</html>
