@@ -77,7 +77,7 @@ var app = new function(){
             }
     }
 
-    this.Delite = function(id){
+    this.Delete = function(id){
         temp = []
         console.log(id)
         for(let i = 0 ; i < this.times.length; i++){
@@ -105,7 +105,7 @@ var app = new function(){
         let data = document.getElementById('data_for_update').value;
         
         this.Insert(data);
-        this.Delite(document.getElementById('edit').value);
+        this.Delete(document.getElementById('edit').value);
         document.getElementById('edit').style.display = 'none';
         this.Read();
     }
@@ -120,13 +120,13 @@ var app = new function(){
     }
 
     this.buttons = function(id){
-        let btnDelite = '';
+        let btnDelete = '';
         let btnEdit = '';
         
-        btnDelite = "<td><button class='btn' id='" + id + "' onclick='app.Delite(" + id + ")'>Excluir</button></td>";
+        btnDelete = "<td><button class='btn' id='" + id + "' onclick='app.Delete(" + id + ")'>Excluir</button></td>";
         btnEdit   = "<td><button class='btn' id='" + id + "' onclick='app.Edit(" + id + ")'>Editar</button></td>";
 
-        return btnDelite + btnEdit;
+        return btnDelete + btnEdit;
     }
 
     this.Start = function(){
